@@ -7,14 +7,19 @@ import { SingInAuthDto } from './dto/sign-in-auth.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
-  singUp(@Body() createAuthDto: SingUpAuthDto) {
-    return this.authService.create(createAuthDto);
+  @Post('/sign-up')
+  async singUp(@Body() createAuthDto: SingUpAuthDto) {
+    const accessToken = await this.authService.singUp(createAuthDto);
+
+    return {
+      message : 'sign up successfully',
+      data : accessToken
+    }
   }
 
   @Post()
   singIn(@Body() createAuthDto: SingInAuthDto) {
-    return this.authService.create(createAuthDto);
+    // return this.authService.singUp(createAuthDto);
   }
 
 

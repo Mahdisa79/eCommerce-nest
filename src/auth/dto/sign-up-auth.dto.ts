@@ -1,1 +1,9 @@
-export class SingUpAuthDto {}
+export class SingUpAuthDto {
+    firstName: string;
+
+    lastName: string;
+  
+    email: string;
+  
+    password: string;
+}
