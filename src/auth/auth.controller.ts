@@ -8,8 +8,8 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('/sign-up')
-  async singUp(@Body() createAuthDto: SingUpAuthDto) {
-    const accessToken = await this.authService.singUp(createAuthDto);
+  async singUp(@Body() singUpAuthDTO: SingUpAuthDto) {
+    const accessToken = await this.authService.singUp(singUpAuthDTO);
 
     return {
       message : 'sign up successfully',
@@ -17,9 +17,13 @@ export class AuthController {
     }
   }
 
-  @Post()
-  singIn(@Body() createAuthDto: SingInAuthDto) {
-    // return this.authService.singUp(createAuthDto);
+  @Post('/sign-in')
+  async singIn(@Body() singInAuthDTO: SingInAuthDto) {
+    const accessToken = await this.authService.singIn(singInAuthDTO);
+    return {
+      message : 'sign in successfully',
+      data : accessToken
+    }
   }
 
 
