@@ -4,6 +4,7 @@ import { SingUpAuthDto } from './dto/sign-up-auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
+import { generateToken } from 'src/utils/token.util';
 
 @Injectable()
 export class AuthService {
@@ -19,16 +20,8 @@ export class AuthService {
     const user = await this.userService.create(singUpAuthDto)
     //3)save it to database
     //4)Generate JWT
-    const payload = {
-      id : user.id,
-      email:user.email,
-      firstName:user.firstName,
-      lastName:user.lastName,
-      isActive : user.isActive
-    }
 
-    const accessToken =  await this.jwtService.signAsync(payload);
-    return accessToken;
+    return generateToken(user,this.jwtService)
   
   }
 
@@ -42,16 +35,7 @@ export class AuthService {
     if(!isMatch) throw new BadRequestException('Bad Credentials');
 
     // 3) Issue accessToken
-    const payload = {
-      id : user.id,
-      email:user.email,
-      firstName:user.firstName,
-      lastName:user.lastName,
-      isActive : user.isActive
-    }
-
-    const accessToken =  await this.jwtService.signAsync(payload);
-    return accessToken;
+    return generateToken(user,this.jwtService)
 
   }
 
