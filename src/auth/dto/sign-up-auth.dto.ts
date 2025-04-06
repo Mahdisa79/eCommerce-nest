@@ -6,4 +6,7 @@ export class SingUpAuthDto {
     email: string;
   
     password: string;
+
+    role:string;
+
 }
