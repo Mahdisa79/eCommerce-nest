@@ -25,19 +25,21 @@ export class RoleService {
     return role;
   }
 
-  findAll() {
-    return `This action returns all role`;
+  async findAll() {
+    const roles = await this.roleRepository.find();
+    return roles;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} role`;
+  async update(name: string, updateRoleDto: UpdateRoleDto) {
+    const role = await this.getRole(name);
+
+    role.description = updateRoleDto.description;
+    return this.roleRepository.save(role);
   }
 
-  update(id: number, updateRoleDto: UpdateRoleDto) {
-    return `This action updates a #${id} role`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} role`;
+  async remove(name: string) {
+    const role = await this.getRole(name);
+    role.isActive = false ;
+    await this.roleRepository.save(role);
   }
 }
