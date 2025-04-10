@@ -16,12 +16,12 @@ export class Permission {
     role : Role;
 
 
-    @ManyToOne(()=>Role , (role) =>role.permissions )
+    @ManyToOne(()=>Endpoint , (endpoint) =>endpoint.permissions )
     @JoinColumn({name:'endpointId'})
     endpoint : Endpoint;
 
 
-    @Column()
+    @Column({default:false})
     isAllow:boolean;
 
 }
