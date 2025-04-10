@@ -20,19 +20,5 @@ export class EndpointService {
     return this.endpointService.save(endpoint);
   }
 
-  findAll() {
-    return `This action returns all endpoint`;
-  }
 
-  findOne(id: number) {
-    return `This action returns a #${id} endpoint`;
-  }
-
-  update(id: number, updateEndpointDto: UpdateEndpointDto) {
-    return `This action updates a #${id} endpoint`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} endpoint`;
-  }
 }

@@ -43,7 +43,7 @@ async function bootstrap() {
   .createQueryBuilder('role')
   .where('role.isActive = :isActive',{isActive:true})
   .getMany();
-  console.log(roles);
+  // console.log(roles);
 
   const endpoints = await queryRunner.manager.getRepository(Endpoint)
   .createQueryBuilder('endpoint')
@@ -53,10 +53,11 @@ async function bootstrap() {
     //Loop get All endpoints
     for(const endpoint of endpoints){
 
-      await queryRunner.manager.
-      createQueryBuilder()
+      await queryRunner.manager
+      .createQueryBuilder()
       .insert().into(Permission)
-      .values({endpointId : endpoint.id , roleName : role.name }).execute();
+      .values({endpointId : endpoint.id , roleName : role.name , isAllow : role.name === 'admin' ? true : false})
+      .execute();
 
     }
   }
