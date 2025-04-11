@@ -33,11 +33,16 @@ export class CategoryService {
     return category; 
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
-  }
+  async update(id: number, updateCategoryDto: UpdateCategoryDto) {
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+    const category = await this.findOne(id);
+    Object.assign(category ,updateCategoryDto );
+    return this.categoryRepository.save(category);
+  }
+  
+
+  async remove(id: number) {
+    const category = await this.findOne(id);
+    return this.categoryRepository.softRemove(category); 
   }
 }

@@ -1,4 +1,4 @@
-import { AfterInsert, AfterUpdate, BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { AfterInsert, AfterUpdate, BeforeInsert, Column, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 import slugify from "slugify";
 
 @Entity()
@@ -14,6 +14,12 @@ export class Category {
 
     @Column()
     slug:string
+
+    // @Column({default:true})
+    // isActive:boolean
+    
+    @DeleteDateColumn()
+    deletedDate:Date;
 
     @BeforeInsert()
     @AfterUpdate()
