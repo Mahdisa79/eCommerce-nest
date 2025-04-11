@@ -19,7 +19,10 @@ export class TransformInterceptor<T> implements NestInterceptor {
       .handle()
       .pipe(
         map((data) =>{
-            return plainToInstance(this.dtoClass,data,{excludeExtraneousValues:true})
+            return {
+              message :'success',
+              data : plainToInstance(this.dtoClass,data,{excludeExtraneousValues:true})
+            }
         } ) ,
       );
   }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -22,12 +22,15 @@ export class CategoryService {
     return this.categoryRepository.save(category)
   }
 
-  findAll() {
-    return `This action returns all category`;
+  async findAll() {
+    const categories = await this.categoryRepository.find();
+    return categories;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} category`;
+  async findOne(id: number) {
+    const category = await this.categoryRepository.findOne({where:{id}});
+    if(!category) throw new NotFoundException(`Category ${id} Not Found`)
+    return category; 
   }
 
   update(id: number, updateCategoryDto: UpdateCategoryDto) {
