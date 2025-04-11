@@ -6,12 +6,24 @@ import { getAllRoutes } from './utils/app.util';
 import { Endpoint, HttpMethod } from './endpoint/entities/endpoint.entity';
 import { Role } from './role/entities/role.entity';
 import { Permission } from './permissions/entities/permission.entity';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalPipes(new ValidationPipe());
+
+  const config = new DocumentBuilder()
+  .setTitle('eCommerce API')
+  .setDescription('The eCommerce API description')
+  .setVersion('1.0')
+  .addTag('eCommerce')
+  .build();
+
+  const documentFactory = () => SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, documentFactory);
+
   await app.listen(3000);
 
 
