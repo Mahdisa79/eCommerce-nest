@@ -6,8 +6,10 @@ import { AuthGuard } from 'src/cores/guards/auth.guard';
 import { Request } from 'express';
 import { CurrentUser } from 'src/cores/decorators/current-user.decorator';
 import { UserPayload } from './interfaces/user-payload.interface';
+import { API_VERSION } from 'src/cores/constants/app.constant';
 
- @Controller('api/v1/users')
+@Controller(`${API_VERSION}/users`)
+
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

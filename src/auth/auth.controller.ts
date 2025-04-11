@@ -2,8 +2,9 @@ import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { SingUpAuthDto } from './dto/sign-up-auth.dto';
 import { SingInAuthDto } from './dto/sign-in-auth.dto';
+import { API_VERSION } from 'src/cores/constants/app.constant';
 
-@Controller('api/v1/auth')
+@Controller(`${API_VERSION}/auth`)
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
