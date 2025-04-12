@@ -1,4 +1,4 @@
-import { AfterInsert, AfterUpdate, BeforeInsert, Column, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { AfterInsert, AfterUpdate, BeforeInsert, Column, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import slugify from "slugify";
 
 @Entity()
@@ -18,6 +18,12 @@ export class Category {
     // @Column({default:true})
     // isActive:boolean
     
+    @ManyToOne(()=>Category,(c)=>c.children)
+    parent:Category;
+
+    @OneToMany(()=>Category,(c)=>c.parent)
+    children : Category[]
+
     @DeleteDateColumn()
     deletedDate:Date;
 
