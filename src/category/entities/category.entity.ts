@@ -1,5 +1,6 @@
 import { AfterInsert, AfterUpdate, BeforeInsert, Column, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import slugify from "slugify";
+import { Product } from "src/product/entities/product.entity";
 
 @Entity()
 export class Category {
@@ -26,6 +27,9 @@ export class Category {
 
     @DeleteDateColumn()
     deletedDate:Date;
+
+    @OneToMany(()=>Product , (p)=>p.category)
+    products : Product[]
 
     @BeforeInsert()
     @AfterUpdate()
