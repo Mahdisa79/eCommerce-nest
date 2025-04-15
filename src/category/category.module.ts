@@ -10,5 +10,6 @@ import { ConfigModule } from '@nestjs/config';
   imports:[TypeOrmModule.forFeature([Category]) , JwtModule, ConfigModule],
   controllers: [CategoryController],
   providers: [CategoryService],
+  exports:[CategoryService]
 })
 export class CategoryModule {}

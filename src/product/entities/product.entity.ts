@@ -7,27 +7,27 @@ export class Product {
     @PrimaryGeneratedColumn()
     id : number;
 
-    @Column()
+    @Column({type:"varchar"  , length:100})
     name:string
 
-    @Column()
+    @Column({type:'numeric' , precision:6 , scale:2})
     price:number
 
 
-    @Column({nullable:true})
+    @Column({type:'numeric' , precision:6 , scale:2 , nullable:true})
     offerPrice:number
 
-    @Column()
+    @Column({type:"varchar"  , length:255})
     shortDescription:string
 
     
-    @Column({nullable:true})
+    @Column({type:'text' , nullable:true})
     longDescription:string
 
-    @Column()
+    @Column({type:'int'})
     quantity:number
 
-    @Column()
+    @Column({type:'text'})
     slug:string
 
     @ManyToOne(()=>Category, (c)=>c.products)

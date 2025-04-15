@@ -1,1 +1,38 @@
-export class CreateProductDto {}
+import { IsInt, IsNotEmpty, IsNumber, IsString, Length } from "class-validator"
+
+export class CreateProductDto {
+
+    @IsNotEmpty()
+    @IsString()
+    @Length(0,100)
+    name:string
+
+    @IsNotEmpty()
+    @IsNumber()
+    price:number
+
+
+    // @IsNumber()
+    offerPrice:number
+
+    @IsNotEmpty()
+    @IsString()
+    @Length(0,255)
+    shortDescription:string
+
+
+    @IsString()
+    longDescription:string
+
+
+    @IsNotEmpty()
+    @IsInt()
+    quantity:number
+
+
+    @IsNotEmpty()
+    @IsInt()
+    categoryId:number;
+
+
+}
