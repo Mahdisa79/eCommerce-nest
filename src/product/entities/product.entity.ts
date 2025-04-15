@@ -1,6 +1,6 @@
 import slugify from "slugify";
 import { Category } from "src/category/entities/category.entity";
-import { AfterUpdate, BeforeInsert, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { AfterUpdate, BeforeInsert, Column, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Product {
@@ -33,6 +33,8 @@ export class Product {
     @ManyToOne(()=>Category, (c)=>c.products)
     category:Category;
 
+    @DeleteDateColumn()
+    deletedDate:Date;
 
     @BeforeInsert()
     @AfterUpdate()
