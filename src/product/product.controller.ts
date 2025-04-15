@@ -5,9 +5,10 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { TransformDTO } from 'src/cores/interceptors/transform-dto.interceptor';
 import { ResponseProductDto } from './dto/response-product.dto';
 import { API_VERSION } from 'src/cores/constants/app.constant';
+import { Paginate, PaginateQuery } from 'nestjs-paginate';
 
 @Controller(`${API_VERSION}/products`)
-@TransformDTO(ResponseProductDto)
+// @TransformDTO(ResponseProductDto)
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
@@ -17,8 +18,8 @@ export class ProductController {
   }
 
   @Get()
-  findAll() {
-    return this.productService.findAll();
+  findAll(@Paginate() query: PaginateQuery) {
+    return this.productService.findAll(query);
   }
 
   @Get(':id')

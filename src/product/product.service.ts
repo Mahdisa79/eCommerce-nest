@@ -6,6 +6,8 @@ import { UpdateProductDto } from './dto/update-product.dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Category } from 'src/category/entities/category.entity';
+import { FilterOperator, FilterSuffix, Paginate, PaginateQuery, paginate, Paginated } from 'nestjs-paginate'
+
 
 @Injectable()
 export class ProductService {
@@ -28,11 +30,26 @@ export class ProductService {
     return this.productRepository.save(product);
   }
 
-  async findAll() {
+  // async findAll() {
 
-    const products = await this.productRepository.find({relations:{category:true}});
-    return products
+  //   const products = await this.productRepository.find({relations:{category:true}});
+  //   return products
+  // }
+
+  public findAll(query: PaginateQuery): Promise<Paginated<Product>> {
+    return paginate(query, this.productRepository, {
+      sortableColumns: ['id', 'name','price'],
+      defaultSortBy: [['price', 'DESC']],
+      searchableColumns: ['name', 'shortDescription', 'longDescription'],
+      filterableColumns: {
+        name: [FilterOperator.EQ, FilterSuffix.NOT],
+        shortDescription: [FilterOperator.EQ, FilterSuffix.NOT],
+        longDescription: [FilterOperator.EQ, FilterSuffix.NOT]
+
+      },
+    })
   }
+
 
   async findOne(id: number) {
     const product = await this.productRepository.findOne({where:{id},relations:{category:true}});
