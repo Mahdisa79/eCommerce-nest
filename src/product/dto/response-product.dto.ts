@@ -21,10 +21,15 @@ export class ResponseProductDto {
     quantity:number
 
     @Expose()
+    slug:string
+
+    @Expose()
     categoryId:number;
     @Expose()
-    @Transform(({obj} : {obj : Product})=>obj.category.name)
+    @Transform(({obj} : {obj : Product})=>obj?.category?.name)
     category:string
 
+    // @Transform((value)=>console.log(value))
+    // category:string
 
 }

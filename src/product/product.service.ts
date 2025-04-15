@@ -1,6 +1,6 @@
 import { CategoryService } from './../category/category.service';
 import { Product } from 'src/product/entities/product.entity';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { Repository } from 'typeorm';
@@ -27,13 +27,23 @@ export class ProductService {
     return this.productRepository.save(product);
   }
 
-  findAll() {
-    return `This action returns all product`;
+  async findAll() {
+
+    const products = await this.productRepository.find({relations:{category:true}});
+    return products
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
-  }
+  async findOne(id: number) {
+    const product = await this.productRepository.findOne({where:{id},relations:{category:true}});
+    if(!product) throw new NotFoundException(`Product With Id ${product} Not Found`)
+    return product
+   }
+
+   async findOneBySlug(slug: string) {
+    const product = await this.productRepository.findOne({where:{slug},relations:{category:true}});
+    if(!product) throw new NotFoundException(`Product With slug ${product} Not Found`)
+    return product
+   }
 
   update(id: number, updateProductDto: UpdateProductDto) {
     return `This action updates a #${id} product`;
