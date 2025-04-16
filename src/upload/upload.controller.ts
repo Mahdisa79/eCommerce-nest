@@ -1,18 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, ParseFilePipe, MaxFileSizeValidator, FileTypeValidator } from '@nestjs/common';
-import { UploadService } from './upload.service';
-import { CreateUploadDto } from './dto/create-upload.dto';
-import { UpdateUploadDto } from './dto/update-upload.dto';
+import { Controller, FileTypeValidator, MaxFileSizeValidator, Param, ParseFilePipe, ParseIntPipe, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { API_VERSION } from 'src/cores/constants/app.constant';
 import { diskStorage } from 'multer';
 import * as path from 'node:path';
+import { API_VERSION } from 'src/cores/constants/app.constant';
+import { UploadService } from './upload.service';
 @Controller(`${API_VERSION}/uploads`)
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
 
 
   //['products' , 'users']
-  @Post(':type')
+  @Post(':type/:entityId')
   @UseInterceptors(FileInterceptor('file',{
     storage:diskStorage({
       destination: function (req, file, cb) {
@@ -25,39 +23,22 @@ export class UploadController {
       }
     })
   }))
-  uploadFile(@UploadedFile( new ParseFilePipe({
+
+
+  async uploadFile(@Param('type') type:string,
+  @Param('entityId',ParseIntPipe)entityId : number,
+  @UploadedFile( new ParseFilePipe({
     validators: [
       new MaxFileSizeValidator({ maxSize: 1048576 }),
       new FileTypeValidator({ fileType: 'image/*' }),
     ],
   }),) file: Express.Multer.File) {
+    // console.log({type,entityId,file});
+    await this.uploadService.upload(type,entityId,file);
     return {
       message : 'success'
     }
   }
 
-  @Post()
-  create(@Body() createUploadDto: CreateUploadDto) {
-    return this.uploadService.create(createUploadDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.uploadService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.uploadService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUploadDto: UpdateUploadDto) {
-    return this.uploadService.update(+id, updateUploadDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.uploadService.remove(+id);
-  }
+  
 }
