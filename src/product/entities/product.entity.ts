@@ -10,6 +10,9 @@ export class Product {
     @Column({type:"varchar"  , length:100})
     name:string
 
+    @Column({type:"varchar"  , length:100 , nullable:true})
+    image:string
+
     @Column({type:'numeric' , precision:6 , scale:2})
     price:number
 

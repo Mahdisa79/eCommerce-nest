@@ -16,6 +16,7 @@ import { CategoryModule } from './category/category.module';
 import { Category } from './category/entities/category.entity';
 import { ProductModule } from './product/product.module';
 import { Product } from './product/entities/product.entity';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [ 
@@ -41,6 +42,7 @@ import { Product } from './product/entities/product.entity';
     PermissionsModule,
     CategoryModule,
     ProductModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],
