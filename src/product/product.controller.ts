@@ -8,7 +8,7 @@ import { API_VERSION } from 'src/cores/constants/app.constant';
 import { Paginate, PaginateQuery } from 'nestjs-paginate';
 
 @Controller(`${API_VERSION}/products`)
-// @TransformDTO(ResponseProductDto)
+@TransformDTO(ResponseProductDto)
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 

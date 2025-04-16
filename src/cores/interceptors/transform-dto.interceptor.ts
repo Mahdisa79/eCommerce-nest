@@ -19,7 +19,25 @@ export class TransformInterceptor<T> implements NestInterceptor {
       .handle()
       .pipe(
         map((data) =>{
+
+         
+          if(data && data.data){ // have pagination
+            // console.log(data);
+            
             return {
+              message :'success',
+              data : plainToInstance(this.dtoClass,data.data,{excludeExtraneousValues:true}),
+              pagination:{
+                itemsPerPage: data.meta.itemsPerPage,
+                totalItems: data.meta.totalItems,
+                currentPage: data.meta.currentPage,
+                totalPages: data.meta.totalPages,
+              }
+            }
+          }
+
+
+          return {
               message :'success',
               data : plainToInstance(this.dtoClass,data,{excludeExtraneousValues:true})
             }
