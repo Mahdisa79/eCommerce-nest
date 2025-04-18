@@ -9,7 +9,7 @@ export class ProductGalleriesController {
 
   @Post()
   create(@Body() createProductGalleryDto: CreateProductGalleryDto) {
-    return this.productGalleriesService.create(createProductGalleryDto);
+    // return this.productGalleriesService.create(createProductGalleryDto);
   }
 
   @Get()
