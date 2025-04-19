@@ -2,8 +2,12 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { VariantsService } from './variants.service';
 import { CreateVariantDto } from './dto/create-variant.dto';
 import { UpdateVariantDto } from './dto/update-variant.dto';
+import { API_VERSION } from 'src/cores/constants/app.constant';
+import { TransformDTO } from 'src/cores/interceptors/transform-dto.interceptor';
+import { ResponseVariantDto } from './dto/response-variant.dto';
 
-@Controller('variants')
+@Controller(`${API_VERSION}/variants`)
+@TransformDTO(ResponseVariantDto)
 export class VariantsController {
   constructor(private readonly variantsService: VariantsService) {}
 
