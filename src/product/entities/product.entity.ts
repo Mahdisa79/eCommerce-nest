@@ -1,6 +1,7 @@
 import slugify from "slugify";
 import { Category } from "src/category/entities/category.entity";
 import { ProductGallery } from "src/product-galleries/entities/product-gallery.entity";
+import { Variant } from "src/variants/entities/variant.entity";
 import { AfterUpdate, BeforeInsert, Column, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -39,6 +40,9 @@ export class Product {
 
     @OneToMany(()=>ProductGallery,(g)=>g.product)
     productGalleries:ProductGallery[];
+
+    @OneToMany(()=>Variant,(v)=>v.product)
+    variants:Variant[]
 
     @DeleteDateColumn()
     deletedDate:Date;
