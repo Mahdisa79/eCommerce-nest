@@ -26,13 +26,8 @@ export class VariantsController {
     return this.variantsService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVariantDto: UpdateVariantDto) {
-    return this.variantsService.update(+id, updateVariantDto);
-  }
-
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.variantsService.remove(+id);
+  remove(@Param('id' , ParseIntPipe) id: number) {
+    return this.variantsService.remove(id);
   }
 }

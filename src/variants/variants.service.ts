@@ -43,11 +43,10 @@ export class VariantsService {
 
   }
 
-  update(id: number, updateVariantDto: UpdateVariantDto) {
-    return `This action updates a #${id} variant`;
-  }
 
-  remove(id: number) {
-    return `This action removes a #${id} variant`;
+
+  async remove(id: number) {
+    const variant = await this.findOne(id);
+    this.variantRepository.remove(variant);
   }
 }
