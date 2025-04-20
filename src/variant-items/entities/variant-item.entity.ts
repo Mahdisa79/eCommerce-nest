@@ -11,7 +11,7 @@ export class VariantItem {
     value:string
 
     
-    @ManyToOne(()=>Variant , (v)=>v.items )
+    @ManyToOne(()=>Variant , (v)=>v.items , {onDelete:'CASCADE'})
     variant:Variant
 
 }
