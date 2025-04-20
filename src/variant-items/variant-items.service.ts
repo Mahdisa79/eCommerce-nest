@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Get, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateVariantItemDto } from './dto/create-variant-item.dto';
@@ -23,8 +23,10 @@ export class VariantItemsService {
     return this.variantItemRepository.save(variantItem);
   }
 
-  findAll() {
-    return `This action returns all variantItems`;
+  async findAll(variantId:number) {
+    const variant = await this.variantService.findOne(variantId);
+
+    return this.variantItemRepository.find({where:{variant}})
   }
 
   findOne(id: number) {

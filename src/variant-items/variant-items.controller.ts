@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { VariantItemsService } from './variant-items.service';
 import { CreateVariantItemDto } from './dto/create-variant-item.dto';
 import { UpdateVariantItemDto } from './dto/update-variant-item.dto';
@@ -16,9 +16,9 @@ export class VariantItemsController {
     return this.variantItemsService.create(createVariantItemDto);
   }
 
-  @Get()
-  findAll() {
-    return this.variantItemsService.findAll();
+  @Get('/:variantId/variant')
+  findAll(@Param('variantId',ParseIntPipe) variantId : number ) {
+    return this.variantItemsService.findAll(variantId);
   }
 
   @Get(':id')
