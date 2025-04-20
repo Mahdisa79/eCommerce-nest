@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateVariantDto } from './dto/create-variant.dto';
 import { UpdateVariantDto } from './dto/update-variant.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -25,12 +25,22 @@ export class VariantsService {
     return this.variantRepository.save(variant);
   }
 
-  findAll() {
-    return `This action returns all variants`;
+  async findAll(productId : number) {
+
+    const product =  await this.productService.findOne(productId);
+
+    return this.variantRepository.find({where:{product}})
+  
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} variant`;
+  async findOne(id: number) {
+    
+    const variant = await this.variantRepository.findOne({where:{id}});
+    if(!variant)
+      throw new NotFoundException(`variant ${id} Not Founded`)
+
+    return variant;
+
   }
 
   update(id: number, updateVariantDto: UpdateVariantDto) {
