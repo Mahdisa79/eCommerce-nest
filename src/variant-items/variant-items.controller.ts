@@ -22,17 +22,13 @@ export class VariantItemsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.variantItemsService.findOne(+id);
+  findOne(@Param('id',ParseIntPipe) id: number) {
+    return this.variantItemsService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVariantItemDto: UpdateVariantItemDto) {
-    return this.variantItemsService.update(+id, updateVariantItemDto);
-  }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.variantItemsService.remove(+id);
+  remove(@Param('id',ParseIntPipe) id: number) {
+    return this.variantItemsService.remove(id);
   }
 }

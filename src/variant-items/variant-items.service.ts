@@ -1,4 +1,4 @@
-import { Get, Injectable } from '@nestjs/common';
+import { BadRequestException, Get, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateVariantItemDto } from './dto/create-variant-item.dto';
@@ -29,15 +29,18 @@ export class VariantItemsService {
     return this.variantItemRepository.find({where:{variant}})
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} variantItem`;
+  async findOne(id: number) {
+    const variantItem = await this.variantItemRepository.find({where:{id}})
+  
+    if(!variantItem)
+      throw new BadRequestException(`variantItem ${variantItem} Not Founded`)
+
+    return variantItem;
   }
 
-  update(id: number, updateVariantItemDto: UpdateVariantItemDto) {
-    return `This action updates a #${id} variantItem`;
-  }
+  async remove(id: number) {
+    const variantItem = await this.findOne(id)
+    await this.variantItemRepository.remove(variantItem);
 
-  remove(id: number) {
-    return `This action removes a #${id} variantItem`;
   }
 }
