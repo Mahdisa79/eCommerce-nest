@@ -1,4 +1,4 @@
-import { IsInt, IsNotEmpty, IsString } from "class-validator";
+import { IsInt, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreateVariantItemDto {
     @IsNotEmpty()
@@ -8,5 +8,9 @@ export class CreateVariantItemDto {
     @IsNotEmpty()
     @IsInt()
     variantId:number
+
+    @IsNotEmpty()
+    @IsNumber()
+    price:number
 
 }
