@@ -16,5 +16,5 @@ export class ResponseCategoryDto {
 
     @Expose()
     @Type(()=>ResponseCategoryDto)
-    children : Category[];
+    children : ResponseCategoryDto[];
 }
