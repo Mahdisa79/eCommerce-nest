@@ -7,9 +7,11 @@ import { Request } from 'express';
 import { CurrentUser } from 'src/cores/decorators/current-user.decorator';
 import { UserPayload } from './interfaces/user-payload.interface';
 import { API_VERSION } from 'src/cores/constants/app.constant';
+import { TransformDTO } from 'src/cores/interceptors/transform-dto.interceptor';
+import { ResponseUserDto } from './dto/response-user.dto';
 
 @Controller(`${API_VERSION}/users`)
-
+@TransformDTO(ResponseUserDto)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 

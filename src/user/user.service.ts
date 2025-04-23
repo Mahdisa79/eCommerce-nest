@@ -38,8 +38,11 @@ export class UserService {
     return user;
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll() {
+    const users = await this.userRepository.find({relations:{role:true}});
+    console.log(users);
+    
+    return users;
   }
 
   findOne(id: number) {
