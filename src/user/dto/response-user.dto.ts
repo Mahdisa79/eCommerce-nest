@@ -18,7 +18,7 @@ export class ResponseUserDto{
     email: string;
 
     @Expose()
-    @Transform(({obj} : {obj : User}) => obj.role.name)
+    @Transform(({obj} : {obj : User}) => obj.role?.name)
     role:string;
 
 }
