@@ -53,8 +53,20 @@ export class UserService {
     return users;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+
+    const user = await this.findOne(id);
+
+    // Object.assign(user,{
+    //   firstName : updateUserDto.firstName,
+    //   lastName : updateUserDto.lastName
+    // })
+
+    user.firstName = updateUserDto.firstName ? updateUserDto.firstName : user.firstName;
+    user.lastName = updateUserDto.lastName? updateUserDto.lastName : user.lastName;
+
+    return this.userRepository.save(user);
+
   }
 
   remove(id: number) {
