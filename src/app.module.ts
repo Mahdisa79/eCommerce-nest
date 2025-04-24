@@ -25,6 +25,7 @@ import { VariantItemsModule } from './variant-items/variant-items.module';
 import { VariantItem } from './variant-items/entities/variant-item.entity';
 import { CartModule } from './cart/cart.module';
 import { Cart } from './cart/entities/cart.entity';
+import { CartItem } from './cart/entities/cart-item.entity';
 
 @Module({
   imports: [ 
@@ -38,7 +39,7 @@ import { Cart } from './cart/entities/cart.entity';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [User,Role,Endpoint,Permission,Category,Product,ProductGallery,Variant,VariantItem,Cart],
+        entities: [User,Role,Endpoint,Permission,Category,Product,ProductGallery,Variant,VariantItem,Cart,CartItem],
         synchronize: true,
       }),
       inject: [ConfigService],
