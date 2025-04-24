@@ -6,9 +6,10 @@ import { User } from './entities/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { RoleModule } from 'src/role/role.module';
+import { CartModule } from 'src/cart/cart.module';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([User]),RoleModule,JwtModule,ConfigModule],
+  imports:[TypeOrmModule.forFeature([User]),RoleModule,JwtModule,ConfigModule,CartModule],
   controllers: [UserController],
   providers: [UserService],
   exports:[UserService]

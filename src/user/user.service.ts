@@ -9,6 +9,7 @@ import * as bcrypt from 'bcrypt';
 import { RoleService } from 'src/role/role.service';
 import { UserPayload } from './interfaces/user-payload.interface';
 import { SALT } from 'src/cores/constants/app.constant';
+import { CartService } from 'src/cart/cart.service';
 
 @Injectable()
 export class UserService {
@@ -17,17 +18,25 @@ export class UserService {
     @InjectRepository(User)
     private userRepository : Repository<User>,
     private roleService : RoleService,
+    private cartService : CartService
   ){}
 
   async create(createUserDto: CreateUserDto) {
    
+    
     const role = await this.roleService.getRole('user');
 
     const user = new User();
     const hashedPassword = await bcrypt.hash(createUserDto.password, SALT);
     Object.assign(user,{...createUserDto , password :hashedPassword , role });
 
-    return this.userRepository.save(user);
+    
+
+    const userSaved = await this.userRepository.save(user);
+
+    await this.cartService.create(userSaved);
+
+    return userSaved;
   }
 
   async findByEmail(email:string){
