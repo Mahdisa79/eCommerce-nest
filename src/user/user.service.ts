@@ -1,4 +1,5 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ChangePwdUserDto } from './dto/change-pwd-user.dto';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -6,6 +7,8 @@ import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { RoleService } from 'src/role/role.service';
+import { UserPayload } from './interfaces/user-payload.interface';
+import { SALT } from 'src/cores/constants/app.constant';
 
 @Injectable()
 export class UserService {
@@ -21,7 +24,7 @@ export class UserService {
     const role = await this.roleService.getRole('user');
 
     const user = new User();
-    const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+    const hashedPassword = await bcrypt.hash(createUserDto.password, SALT);
     Object.assign(user,{...createUserDto , password :hashedPassword , role });
 
     return this.userRepository.save(user);
@@ -73,4 +76,28 @@ export class UserService {
     const user = await this.findOne(id);
     await this.userRepository.softRemove(user)
   }
+
+
+
+  async changeMyPassword(changePwdUserDto:ChangePwdUserDto ,currentUser : UserPayload  ) {
+
+    const user = await this.findOne(currentUser.id)
+    const {currentPassword ,newPassword ,confirmPassword } =changePwdUserDto;
+
+    const isMatch = await bcrypt.compare(currentPassword , user.password)
+
+    if(!isMatch)
+      throw new BadRequestException('wrong password')
+
+    if(newPassword !== confirmPassword)
+      throw new BadRequestException('Passwords Are Not Same')
+
+    const hashedNewPassword = await bcrypt.hash(newPassword,SALT);
+
+    user.password = hashedNewPassword;
+
+    await this.userRepository.save(user)
+
+  }
+
 }

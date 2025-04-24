@@ -9,6 +9,7 @@ import { UserPayload } from './interfaces/user-payload.interface';
 import { API_VERSION } from 'src/cores/constants/app.constant';
 import { TransformDTO } from 'src/cores/interceptors/transform-dto.interceptor';
 import { ResponseUserDto } from './dto/response-user.dto';
+import { ChangePwdUserDto } from './dto/change-pwd-user.dto';
 
 @Controller(`${API_VERSION}/users`)
 @TransformDTO(ResponseUserDto)
@@ -26,6 +27,14 @@ export class UserController {
 
     return user;
   }
+
+  @Post('/change-password')
+  @UseGuards(AuthGuard)
+  changeMyPassword(@Body() changePwdUserDto:ChangePwdUserDto ,@CurrentUser() user : UserPayload) {
+
+    return this.userService.changeMyPassword(changePwdUserDto,user);
+  }
+
 
   @Get()
   findAll() {
