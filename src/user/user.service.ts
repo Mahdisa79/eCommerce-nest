@@ -72,6 +72,19 @@ export class UserService {
 
   }
 
+  async updateMe(currentUser : UserPayload, updateUserDto: UpdateUserDto) {
+
+    console.log('hiiii');
+    
+    const user = await this.findOne(currentUser.id);
+
+    user.firstName = updateUserDto.firstName ? updateUserDto.firstName : user.firstName;
+    user.lastName = updateUserDto.lastName? updateUserDto.lastName : user.lastName;
+
+    return this.userRepository.save(user);
+
+  }
+
   async remove(id: number) {
     const user = await this.findOne(id);
     await this.userRepository.softRemove(user)
