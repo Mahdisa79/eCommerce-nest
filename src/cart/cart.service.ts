@@ -1,5 +1,5 @@
 import { Variant } from 'src/variants/entities/variant.entity';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { UpdateCartDto } from './dto/update-cart.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -84,4 +84,18 @@ export class CartService {
 
   }
   
+  async findOneCartItem(cartItemId : number){
+    const cartItem = await this.cartItemRepository.findOne({where:{id :cartItemId}});
+    if(!cartItem)
+      throw new NotFoundException(`cartItem ${cartItemId} not found`)
+
+    return cartItem;
+
+  }
+
+  async removeItemFromCart(cartItemId : number){
+
+    const cartItem = await this.findOneCartItem(cartItemId);
+    await this.cartItemRepository.remove(cartItem)
+  }
 }
