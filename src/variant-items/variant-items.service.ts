@@ -30,7 +30,7 @@ export class VariantItemsService {
   }
 
   async findOne(id: number) {
-    const variantItem = await this.variantItemRepository.find({where:{id}})
+    const variantItem = await this.variantItemRepository.findOne({where:{id} ,relations:{variant:true} })
   
     if(!variantItem)
       throw new BadRequestException(`variantItem ${variantItem} Not Founded`)
