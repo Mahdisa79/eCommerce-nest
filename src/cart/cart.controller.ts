@@ -22,6 +22,12 @@ export class CartController {
     return this.cartService.addItemToCart(addToCartDto , user)
   }
 
+  @Get('/me')
+  getMyCart(@CurrentUser() user:UserPayload){
+
+    return this.cartService.findCart(user.id)
+  }
+
   @Delete('/item/:cartItemId')
   deleteItemFromCart(@Param('cartItemId',ParseIntPipe) cartItemId: number){
 

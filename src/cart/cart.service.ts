@@ -36,8 +36,8 @@ export class CartService {
 
   async findCart(userId:number){
 
-    // const cart = await this.cartRepository.findOne({where:{user :{id : userId}},relations:{items:true,user:true}})
-    const cart = await this.cartRepository.createQueryBuilder('cart').where('cart.userId = :userId',{userId}).getOne()
+    const cart = await this.cartRepository.findOne({where:{user :{id : userId}},relations:{items:true,user:true}})
+    // const cart = await this.cartRepository.createQueryBuilder('cart').where('cart.userId = :userId',{userId}).getOne()
 
     if(!cart)
        throw new BadRequestException('No Cart For User')
