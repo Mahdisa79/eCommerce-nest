@@ -1,15 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UseGuards } from '@nestjs/common';
 import { ShippingAddressService } from './shipping-address.service';
 import { CreateShippingAddressDto } from './dto/create-shipping-address.dto';
 import { UpdateShippingAddressDto } from './dto/update-shipping-address.dto';
+import { AuthGuard } from 'src/cores/guards/auth.guard';
+import { API_VERSION } from 'src/cores/constants/app.constant';
+import { CurrentUser } from 'src/cores/decorators/current-user.decorator';
+import { UserPayload } from 'src/user/interfaces/user-payload.interface';
+import { TransformDTO } from 'src/cores/interceptors/transform-dto.interceptor';
+import { ResponseShippingAddressDto } from './dto/response-shipping.address.dto';
 
-@Controller('shipping-address')
+@Controller(`${API_VERSION}/shipping-addresses`)
+@UseGuards(AuthGuard)
+@TransformDTO(ResponseShippingAddressDto)
 export class ShippingAddressController {
   constructor(private readonly shippingAddressService: ShippingAddressService) {}
 
   @Post()
-  create(@Body() createShippingAddressDto: CreateShippingAddressDto) {
-    return this.shippingAddressService.create(createShippingAddressDto);
+  create(@Body() createShippingAddressDto: CreateShippingAddressDto , @CurrentUser() currentUser : UserPayload) {
+    return this.shippingAddressService.create(createShippingAddressDto,currentUser);
   }
 
   @Get()
