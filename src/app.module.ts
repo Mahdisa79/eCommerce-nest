@@ -26,6 +26,8 @@ import { VariantItem } from './variant-items/entities/variant-item.entity';
 import { CartModule } from './cart/cart.module';
 import { Cart } from './cart/entities/cart.entity';
 import { CartItem } from './cart/entities/cart-item.entity';
+import { ShippingAddressModule } from './shipping-address/shipping-address.module';
+import { ShippingAddress } from './shipping-address/entities/shipping-address.entity';
 
 @Module({
   imports: [ 
@@ -39,7 +41,7 @@ import { CartItem } from './cart/entities/cart-item.entity';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [User,Role,Endpoint,Permission,Category,Product,ProductGallery,Variant,VariantItem,Cart,CartItem],
+        entities: [User,Role,Endpoint,Permission,Category,Product,ProductGallery,Variant,VariantItem,Cart,CartItem,ShippingAddress],
         synchronize: true,
       }),
       inject: [ConfigService],
@@ -56,6 +58,7 @@ import { CartItem } from './cart/entities/cart-item.entity';
     VariantsModule,
     VariantItemsModule,
     CartModule,
+    ShippingAddressModule,
   ],
   controllers: [AppController],
   providers: [AppService],

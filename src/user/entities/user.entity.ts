@@ -1,6 +1,7 @@
 
 import { Role } from 'src/role/entities/role.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, DeleteDateColumn } from 'typeorm';
+import { ShippingAddress } from 'src/shipping-address/entities/shipping-address.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, DeleteDateColumn, OneToMany } from 'typeorm';
 
 @Entity()
 export class User {
@@ -28,5 +29,8 @@ export class User {
 
   @ManyToOne(() =>Role , (role) => role.users)
   role: Role;
+
+  @OneToMany(() => ShippingAddress,address => address.user)
+  shippingAddresses:ShippingAddress[]
 
 }
