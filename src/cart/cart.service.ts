@@ -45,6 +45,18 @@ export class CartService {
     return cart;
   }
 
+  async recalculateCartTotal(currentUser : UserPayload){
+
+    //recalculate total price in cart
+
+    const cart = await this.findCart(currentUser.id)
+    const cartItems = await this.cartItemRepository.find({where : {cart}})
+    const  cartTotalPrice = cartItems.reduce((acc,curr) => acc + parseFloat(`${curr.totalPrice}`),0)
+    cart.totalPrice = cartTotalPrice
+    await this.cartRepository.save(cart)
+
+  }
+
   async addItemToCart(addToCartDto : AddToCartDto , currentUser:UserPayload){
 
     const {quantity,variantItemId,productId} = addToCartDto;
@@ -67,21 +79,24 @@ export class CartService {
       cartItemExisting.totalPrice =totalPrice ;
       cartItemExisting.quantity =  quantity;
       await this.cartItemRepository.save(cartItemExisting);
-      return;
 
+
+    }else{
+
+      const cartItem = new CartItem();
+      cartItem.cart = await this.findCart(currentUser.id);
+      cartItem.product = product;
+      cartItem.price = product.price;
+      cartItem.quantity = quantity;
+      cartItem.variant = JSON.stringify(variant);
+      cartItem.totalPrice = totalPrice ;
+
+      await this.cartItemRepository.save(cartItem);
     }
 
-    const cartItem = new CartItem();
-    cartItem.cart = await this.findCart(currentUser.id);
-    cartItem.product = product;
-    cartItem.price = product.price;
-    cartItem.quantity = quantity;
-    cartItem.variant = JSON.stringify(variant);
-    cartItem.totalPrice = totalPrice ;
 
-    
-    await this.cartItemRepository.save(cartItem);
-
+    //recalculate total price in cart
+    await this.recalculateCartTotal(currentUser)
   }
   
   async findOneCartItem(cartItemId : number){
@@ -93,9 +108,12 @@ export class CartService {
 
   }
 
-  async removeItemFromCart(cartItemId : number){
+  async removeItemFromCart(cartItemId : number , currentUser:UserPayload){
 
     const cartItem = await this.findOneCartItem(cartItemId);
     await this.cartItemRepository.remove(cartItem)
+
+    //recalculate total price in cart  
+    await this.recalculateCartTotal(currentUser)
   }
 }
