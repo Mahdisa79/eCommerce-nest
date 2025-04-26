@@ -25,6 +25,11 @@ export class ShippingAddressController {
     return this.shippingAddressService.findAll();
   }
 
+  @Get('/me')
+  findMyAddresses(@CurrentUser() currentUser : UserPayload) {
+    return this.shippingAddressService.findMyAddresses(currentUser);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.shippingAddressService.findOne(+id);
