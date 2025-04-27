@@ -14,6 +14,6 @@ export class ResponseShippingAddressDto {
     phoneNumber:string
 
     @Expose()
-    @Transform(({obj} : {obj :ShippingAddress }) =>obj.user.id ) 
+    @Transform(({obj} : {obj :ShippingAddress }) =>obj.user?.id ) 
     userId:number
 }

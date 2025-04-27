@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateShippingAddressDto } from './dto/create-shipping-address.dto';
 import { UpdateShippingAddressDto } from './dto/update-shipping-address.dto';
 import { UserPayload } from 'src/user/interfaces/user-payload.interface';
@@ -37,12 +37,24 @@ export class ShippingAddressService {
   }
 
 
-  findOne(id: number) {
-    return `This action returns a #${id} shippingAddress`;
+  async findOne(id: number) {
+   const address = await this.addressRepository.findOne({where:{id},relations:{user:true}}); 
+   if(!address) throw new NotFoundException(`the address ${id} Not Found`);
+   return address
   }
 
-  update(id: number, updateShippingAddressDto: UpdateShippingAddressDto) {
-    return `This action updates a #${id} shippingAddress`;
+  async update(id: number, updateShippingAddressDto: UpdateShippingAddressDto) {
+
+    const {value,phoneNumber} = updateShippingAddressDto;
+
+    const address = await this.findOne(id); 
+    if(!address) throw new NotFoundException(`the address ${id} Not Found`);  
+  
+    address.value = value?value:address.value;
+    address.phoneNumber = phoneNumber?phoneNumber:address.phoneNumber;
+
+    return this.addressRepository.save(address);
+  
   }
 
   remove(id: number) {
