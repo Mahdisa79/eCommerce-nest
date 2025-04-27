@@ -57,7 +57,10 @@ export class ShippingAddressService {
   
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} shippingAddress`;
+  async remove(id: number) {
+    const address = await this.findOne(id); 
+    if(!address) throw new NotFoundException(`the address ${id} Not Found`);  
+     this.addressRepository.remove(address)
+     
   }
 }

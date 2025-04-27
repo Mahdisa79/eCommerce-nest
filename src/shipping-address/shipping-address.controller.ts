@@ -41,7 +41,7 @@ export class ShippingAddressController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.shippingAddressService.remove(+id);
+  remove(@Param('id',ParseIntPipe) id: number) {
+    return this.shippingAddressService.remove(id);
   }
 }
