@@ -30,8 +30,16 @@ export class ShippingRuleService {
     return shippingRule
   }
 
-  update(id: number, updateShippingRuleDto: UpdateShippingRuleDto) {
-    return `This action updates a #${id} shippingRule`;
+  
+  async update(id: number, updateShippingRuleDto: UpdateShippingRuleDto) {
+   
+    const {cost,estimateDay} = updateShippingRuleDto;
+    const shippingRule = await this.findOne(id);
+    shippingRule.cost = cost ? cost : shippingRule.cost;
+    shippingRule.estimateDay = estimateDay ? estimateDay : shippingRule.estimateDay;
+
+    return this.shippingRuleRepository.save(shippingRule);
+
   }
 
   remove(id: number) {

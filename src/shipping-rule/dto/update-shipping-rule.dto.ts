@@ -1,4 +1,12 @@
-import { PartialType } from '@nestjs/swagger';
-import { CreateShippingRuleDto } from './create-shipping-rule.dto';
+import { IsInt, IsNotEmpty, IsNumber, IsOptional } from 'class-validator';
 
-export class UpdateShippingRuleDto extends PartialType(CreateShippingRuleDto) {}
+export class UpdateShippingRuleDto  {
+    @IsOptional()
+    @IsNumber()
+    cost:number;
+
+    // @IsNotEmpty()
+    @IsOptional()
+    @IsInt()
+    estimateDay:number;
+}
