@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { ShippingRuleService } from './shipping-rule.service';
 import { CreateShippingRuleDto } from './dto/create-shipping-rule.dto';
 import { UpdateShippingRuleDto } from './dto/update-shipping-rule.dto';
@@ -22,13 +22,13 @@ export class ShippingRuleController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.shippingRuleService.findOne(+id);
+  findOne(@Param('id',ParseIntPipe) id: number) {
+    return this.shippingRuleService.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateShippingRuleDto: UpdateShippingRuleDto) {
-    return this.shippingRuleService.update(+id, updateShippingRuleDto);
+  update(@Param('id',ParseIntPipe) id: number, @Body() updateShippingRuleDto: UpdateShippingRuleDto) {
+    return this.shippingRuleService.update(id, updateShippingRuleDto);
   }
 
   @Delete(':id')

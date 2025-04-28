@@ -1,6 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-export type SHIPPING_RULE_TYPE = 'very fast'|'fast'|'normal';
 
 @Entity()
 export class ShippingRule {
@@ -8,7 +7,7 @@ export class ShippingRule {
     id:number
 
     @Column({type:'varchar' , length:30})
-    type:SHIPPING_RULE_TYPE
+    type:string
 
     @Column({type:'decimal' , precision:5 ,scale:2})
     cost:number

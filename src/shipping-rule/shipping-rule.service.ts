@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateShippingRuleDto } from './dto/create-shipping-rule.dto';
 import { UpdateShippingRuleDto } from './dto/update-shipping-rule.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,11 +20,14 @@ export class ShippingRuleService {
   }
 
   findAll() {
-    return `This action returns all shippingRule`;
+    return this.shippingRuleRepository.find({where:{status:true}});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} shippingRule`;
+
+  async findOne(id: number) {
+    const shippingRule = await this.shippingRuleRepository.findOne({where:{status:true,id}});
+    if(!shippingRule) throw new NotFoundException(`shippingRule ${id} Not Founded`)
+    return shippingRule
   }
 
   update(id: number, updateShippingRuleDto: UpdateShippingRuleDto) {

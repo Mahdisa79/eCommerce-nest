@@ -1,11 +1,10 @@
-import { IsDate, IsIn, IsInt, IsNotEmpty, IsNumber } from "class-validator";
-import { SHIPPING_RULE_TYPE } from "../entities/shipping-rule.entity";
+import { IsDate, IsIn, IsInt, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class CreateShippingRuleDto {
 
     @IsNotEmpty()
-    @IsIn(['very fast','fast','normal'])
-    type:SHIPPING_RULE_TYPE;
+    @IsString()
+    type:string;
 
     @IsNotEmpty()
     @IsNumber()
