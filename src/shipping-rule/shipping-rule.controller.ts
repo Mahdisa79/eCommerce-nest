@@ -2,8 +2,12 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { ShippingRuleService } from './shipping-rule.service';
 import { CreateShippingRuleDto } from './dto/create-shipping-rule.dto';
 import { UpdateShippingRuleDto } from './dto/update-shipping-rule.dto';
+import { API_VERSION } from 'src/cores/constants/app.constant';
+import { TransformDTO } from 'src/cores/interceptors/transform-dto.interceptor';
+import { ResponseShippingRuleDto } from './dto/response-shipping-rule.dto';
 
-@Controller('shipping-rule')
+@Controller(`${API_VERSION}/shipping-rules`)
+@TransformDTO(ResponseShippingRuleDto)
 export class ShippingRuleController {
   constructor(private readonly shippingRuleService: ShippingRuleService) {}
 
