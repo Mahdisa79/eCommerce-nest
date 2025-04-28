@@ -25,7 +25,7 @@ export class ShippingRuleService {
 
 
   async findOne(id: number) {
-    const shippingRule = await this.shippingRuleRepository.findOne({where:{status:true,id}});
+    const shippingRule = await this.shippingRuleRepository.findOne({where:{id}});
     if(!shippingRule) throw new NotFoundException(`shippingRule ${id} Not Founded`)
     return shippingRule
   }
@@ -42,7 +42,15 @@ export class ShippingRuleService {
 
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} shippingRule`;
+  async updateStatus(id: number, status:boolean) {
+
+    const shippingRule = await this.findOne(id);
+    shippingRule.status = status;
+    await this.shippingRuleRepository.save(shippingRule);
+  }
+
+  async remove(id: number) {
+    const shippingRule = await this.findOne(id);
+    await this.shippingRuleRepository.remove(shippingRule);
   }
 }

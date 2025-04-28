@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, ParseBoolPipe } from '@nestjs/common';
 import { ShippingRuleService } from './shipping-rule.service';
 import { CreateShippingRuleDto } from './dto/create-shipping-rule.dto';
 import { UpdateShippingRuleDto } from './dto/update-shipping-rule.dto';
@@ -25,6 +25,11 @@ export class ShippingRuleController {
   findOne(@Param('id',ParseIntPipe) id: number) {
     return this.shippingRuleService.findOne(id);
   }
+  
+  @Patch(':id/:status')
+  updateStatus(@Param('id',ParseIntPipe) id: number,@Param('status',ParseBoolPipe) status: boolean) {
+    return this.shippingRuleService.updateStatus(id, status);
+  }
 
   @Patch(':id')
   update(@Param('id',ParseIntPipe) id: number, @Body() updateShippingRuleDto: UpdateShippingRuleDto) {
@@ -32,7 +37,7 @@ export class ShippingRuleController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.shippingRuleService.remove(+id);
+  remove(@Param('id',ParseIntPipe) id: number) {
+    return this.shippingRuleService.remove(id);
   }
 }
