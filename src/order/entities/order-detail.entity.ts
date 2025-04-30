@@ -19,10 +19,6 @@ export class OrderDetail {
     @Column()
     variant:string
 
-
-    @Column({type:'decimal' , precision:10 , scale:2})
-    variantPrice:number
-
     @Column({type:'decimal',precision:10,scale:2})
     totalPrice:number
 

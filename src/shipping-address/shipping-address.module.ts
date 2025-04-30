@@ -11,5 +11,6 @@ import { ConfigModule } from '@nestjs/config';
   imports:[TypeOrmModule.forFeature([ShippingAddress]),UserModule,JwtModule,ConfigModule],
   controllers: [ShippingAddressController],
   providers: [ShippingAddressService],
+  exports:[ShippingAddressService]
 })
 export class ShippingAddressModule {}
