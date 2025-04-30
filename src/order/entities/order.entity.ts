@@ -1,5 +1,6 @@
 import { User } from "src/user/entities/user.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { OrderDetail } from "./order-detail.entity";
 export type status = 'pending'|'success'|'cancel'
 @Entity()
 export class Order {
@@ -18,6 +19,14 @@ export class Order {
     @Column({type:'text'})
     shippingMethod:string
 
+    @CreateDateColumn()
+    createdAt: Date;
+
     @ManyToOne(()=>User,(user) => user.orders )
     users:User
+
+
+
+    @OneToMany(()=>OrderDetail , (detail) => detail.order)
+    orderDetails : OrderDetail[]
 }

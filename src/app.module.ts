@@ -32,6 +32,7 @@ import { ShippingRuleModule } from './shipping-rule/shipping-rule.module';
 import { ShippingRule } from './shipping-rule/entities/shipping-rule.entity';
 import { OrderModule } from './order/order.module';
 import { Order } from './order/entities/order.entity';
+import { OrderDetail } from './order/entities/order-detail.entity';
 
 @Module({
   imports: [ 
@@ -45,7 +46,7 @@ import { Order } from './order/entities/order.entity';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [User,Role,Endpoint,Permission,Category,Product,ProductGallery,Variant,VariantItem,Cart,CartItem,ShippingAddress,ShippingRule,Order],
+        entities: [User,Role,Endpoint,Permission,Category,Product,ProductGallery,Variant,VariantItem,Cart,CartItem,ShippingAddress,ShippingRule,Order,OrderDetail],
         synchronize: true,
       }),
       inject: [ConfigService],
