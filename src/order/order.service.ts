@@ -69,10 +69,9 @@ export class OrderService {
         // await this.orderDetailRepository.save(newOrderDetails)
         await queryRunner.manager.save(newOrderDetails);
 
-      }
-  
-  
-      //remove cart items
+      }     
+      //calc total price of order
+
       // const updateOrder = await this.orderRepository.findOne({where:{id:newOrder.id},relations:{orderDetails:true}})
       const updateOrder = await queryRunner.manager.findOne(Order,{where:{id:newOrder.id},relations:{orderDetails:true}})
      
@@ -81,7 +80,8 @@ export class OrderService {
       // await this.orderRepository.save(updateOrder)
       await queryRunner.manager.save(updateOrder);
   
-      //calc total price of order
+      //remove cart items
+      await this.cartService.clearAllMyItems(currentUser)
 
       await queryRunner.commitTransaction()
       

@@ -116,4 +116,11 @@ export class CartService {
     //recalculate total price in cart  
     await this.recalculateCartTotal(currentUser)
   }
+
+  async clearAllMyItems(currentUser:UserPayload){
+
+    const cart = await this.findCart(currentUser.id);
+    throw new BadRequestException('Remove Cart Error')
+    await this.cartItemRepository.delete({cart : {id:cart.id}})
+  }
 }
