@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, ParseFloatPipe } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, ParseFloatPipe } from '@nestjs/common';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -10,6 +10,7 @@ import { UserPayload } from 'src/user/interfaces/user-payload.interface';
 import { ProcessOrderDto } from './dto/process.order.dto';
 import { ShippingAddressService } from 'src/shipping-address/shipping-address.service';
 import { ShippingRuleService } from 'src/shipping-rule/shipping-rule.service';
+import { ChangeOrderStatusDto } from './dto/change-order-status.dto';
 
 @Injectable()
 export class OrderService {
@@ -94,29 +95,23 @@ export class OrderService {
     }finally{
       await queryRunner.release();
 
-    }
+    } 
+  }
+  async findOrder(id){
 
+    const order = await this.orderRepository.findOne({where:{id}})
+    if(!order)
+      throw new NotFoundException(`order ${id} Not Found`)
 
-    
+    return order
   }
 
-  create(createOrderDto: CreateOrderDto) {
-    return 'This action adds a new order';
+  async updateStatus(id:number , changeOrderStatusDto:ChangeOrderStatusDto){
+
+    const order = await this.findOrder(id);
+    order.orderStatus = changeOrderStatusDto.status ;
+    await this.orderRepository.save(order)
   }
 
-  findAll() {
-    return `This action returns all order`;
-  }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
-  }
-
-  update(id: number, updateOrderDto: UpdateOrderDto) {
-    return `This action updates a #${id} order`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} order`;
-  }
 }

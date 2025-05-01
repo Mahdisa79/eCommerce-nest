@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
@@ -9,6 +9,7 @@ import { AuthGuard } from 'src/cores/guards/auth.guard';
 import { TransformDTO } from 'src/cores/interceptors/transform-dto.interceptor';
 import { ResponseOrderDto } from './dto/response-order.dto';
 import { ProcessOrderDto } from './dto/process.order.dto';
+import { ChangeOrderStatusDto } from './dto/change-order-status.dto';
 
 @Controller(`${API_VERSION}/orders`)
 @UseGuards(AuthGuard)
@@ -20,23 +21,11 @@ export class OrderController {
   process( @Body() processOrderDto : ProcessOrderDto,@CurrentUser() user : UserPayload ) {
     return this.orderService.process(user , processOrderDto);
   }
-  @Get()
-  findAll() {
-    return this.orderService.findAll();
+ 
+  @Post('/:id')
+  changeStatus( @Param('id' , ParseIntPipe) id : number, @Body() changeOrderStatus : ChangeOrderStatusDto ) {
+    return this.orderService.updateStatus(id , changeOrderStatus);
   }
+ 
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.orderService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateOrderDto: UpdateOrderDto) {
-    return this.orderService.update(+id, updateOrderDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.orderService.remove(+id);
-  }
 }
