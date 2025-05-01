@@ -34,6 +34,6 @@ export class User {
   @OneToMany(() => ShippingAddress,address => address.user)
   shippingAddresses:ShippingAddress[]
 
-  @OneToMany(()=>Order , (order) => order.users)
+  @OneToMany(()=>Order , (order) => order.user)
   orders : Order[]
 }

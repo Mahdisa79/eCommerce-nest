@@ -28,4 +28,13 @@ export class OrderController {
   }
  
 
+  @Get()
+  findAll() {
+    return this.orderService.findAll();
+  }
+
+  @Get('/me')
+  findMyOrders(@CurrentUser() user : UserPayload) {
+    return this.orderService.findMyOrders(user);
+  }
 }

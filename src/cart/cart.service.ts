@@ -120,6 +120,7 @@ export class CartService {
   async clearAllMyItems(currentUser:UserPayload){
 
     const cart = await this.findCart(currentUser.id);
+    if(!cart)
     throw new BadRequestException('Remove Cart Error')
     await this.cartItemRepository.delete({cart : {id:cart.id}})
   }

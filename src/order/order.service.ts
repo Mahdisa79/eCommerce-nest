@@ -11,6 +11,7 @@ import { ProcessOrderDto } from './dto/process.order.dto';
 import { ShippingAddressService } from 'src/shipping-address/shipping-address.service';
 import { ShippingRuleService } from 'src/shipping-rule/shipping-rule.service';
 import { ChangeOrderStatusDto } from './dto/change-order-status.dto';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class OrderService {
@@ -45,6 +46,10 @@ export class OrderService {
         value : shippingAddress.value ,
         phoneNumber : shippingAddress.phoneNumber ,
       }
+      const user = await queryRunner.manager.findOne(User ,{
+        where:{id:currentUser.id}
+      });
+
       //Shipping Rule
       const shippingRule = await this.shippingRuleService.findOne(processOrderDto.shippingRuleId);
       const cart = await this.cartService.findCart(currentUser.id);
@@ -52,6 +57,7 @@ export class OrderService {
   
       order.shippingAddress =  JSON.stringify(shippingAddressInfo);
       order.shippingMethod =  JSON.stringify(shippingRule);
+      order.user =  user;
       
       // const newOrder = await this.orderRepository.save(order);
       const newOrder = await queryRunner.manager.save(order);
@@ -114,4 +120,15 @@ export class OrderService {
   }
 
 
+   
+  async findAll(){
+    const orders= await this.orderRepository.find({relations:{user:true}})
+    return orders;
+
+  }
+
+  async findMyOrders(currentUser:UserPayload){
+    const orders= await this.orderRepository.find({where:{user:{id:currentUser.id}}})
+    return orders;
+  }
 }

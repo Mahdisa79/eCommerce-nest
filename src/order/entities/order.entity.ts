@@ -23,7 +23,7 @@ export class Order {
     createdAt: Date;
 
     @ManyToOne(()=>User,(user) => user.orders )
-    users:User
+    user:User
 
 
 
