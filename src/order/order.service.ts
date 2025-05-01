@@ -131,4 +131,9 @@ export class OrderService {
     const orders= await this.orderRepository.find({where:{user:{id:currentUser.id}}})
     return orders;
   }
+
+  async findOrderDetail(orderId:number){
+    const orderDetail= await this.orderDetailRepository.findOne({where:{order:{id:orderId}}});
+    return orderDetail;
+  }
 }

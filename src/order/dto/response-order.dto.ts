@@ -24,4 +24,16 @@ export class ResponseOrderDto {
     @Transform(({obj} : {obj:Order}) => obj.user?.id)
     userId:string
 
+    //For order detail
+    @Expose()
+    productName:string
+
+    @Expose()
+    productPrice:number
+
+    @Expose()
+    quantity:number
+
+    @Expose()
+    variant:string
 }

@@ -37,4 +37,9 @@ export class OrderController {
   findMyOrders(@CurrentUser() user : UserPayload) {
     return this.orderService.findMyOrders(user);
   }
+
+  @Get('/detail/:orderId')
+  OrderDetail(@Param('orderId' ,ParseIntPipe) orderId :number) {
+    return this.orderService.findOrderDetail(orderId);
+  }
 }
