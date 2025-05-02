@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,8 +20,13 @@ export class ReviewService {
     const product = await this.productService.findOne(createReviewDto.productId);
     const user = await this.userService.findOne(currentUser.id);
 
+    //prevent create review
+    const allOrdersDetails = user.orders.map(order => order.orderDetails).flat()
+    const productFond = allOrdersDetails.find(orderDetail =>orderDetail.product.id === product.id)
+    if(!productFond)
+      throw new BadRequestException('you most buy product to review')
 
-
+    // You are Buy Product
     const review = new Review();
     review.content = createReviewDto.content
     review.rating = createReviewDto.rating
