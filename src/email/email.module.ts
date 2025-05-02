@@ -1,19 +1,27 @@
 import { MailerModule } from '@nestjs-modules/mailer';
 import { Module } from '@nestjs/common';
 import { EmailService } from './email.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports:[
-    MailerModule.forRoot({
-      transport: {
-        host: "sandbox.smtp.mailtrap.io",
-        port: 25,
-        secure:false,
-        auth: {
-          user: "0167b5f71abd39",
-          pass: "dd2b68f3b2e9c5"
+    MailerModule.forRootAsync({
+      imports:[ConfigModule],
+      useFactory:(configService : ConfigService) => {
+        return {
+          transport: {
+            host: configService.get<string>('EMAIL_HOST'),
+            port: configService.get<number>('EMAIL_PORT'),
+            secure:false,
+            auth: {
+              user: configService.get<string>('EMAIL_USER'),
+              pass: configService.get<string>('EMAIL_PASSWORD')
+            }
+          },
         }
       },
+
+      inject:[ConfigService],
     }),
   ],
   controllers: [],

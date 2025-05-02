@@ -1,18 +1,19 @@
 import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
+import { Email } from './interfaces/email.interface';
 
 @Injectable()
 export class EmailService {
   constructor(private readonly mailerService: MailerService) {}
 
-  async sendEmail(): Promise<void> {
+  async sendEmail({to , from = 'admin@gmail.com' , subject , text , html} : Email): Promise<void> {
     await this.mailerService
       .sendMail({
-        to: 'test@nestjs.com', // list of receivers
-        from: 'noreply@nestjs.com', // sender address
-        subject: 'Testing Nest MailerModule ✔', // Subject line
-        text: 'welcome', // plaintext body
-        html: '<b>welcome</b>', // HTML body content
+        to,
+        from,
+        subject,
+        text,
+        html
       })
 
       console.log('Send email successfully');

@@ -93,7 +93,7 @@ export class OrderService {
       await this.cartService.clearAllMyItems(currentUser)
 
       //Send Email
-      await this.emailService.sendEmail()
+      await this.emailService.sendEmail({to : user.email , subject:'Order Successfully'  ,html:`<h3>hi ${user.firstName} , Order Submit Successfully</h3>` })
 
       await queryRunner.commitTransaction()
       
