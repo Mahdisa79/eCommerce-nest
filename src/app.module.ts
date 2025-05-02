@@ -33,6 +33,7 @@ import { ShippingRule } from './shipping-rule/entities/shipping-rule.entity';
 import { OrderModule } from './order/order.module';
 import { Order } from './order/entities/order.entity';
 import { OrderDetail } from './order/entities/order-detail.entity';
+import { EmailModule } from './email/email.module';
 
 @Module({
   imports: [ 
@@ -66,6 +67,7 @@ import { OrderDetail } from './order/entities/order-detail.entity';
     ShippingAddressModule,
     ShippingRuleModule,
     OrderModule,
+    EmailModule,
   ],
   controllers: [AppController],
   providers: [AppService],

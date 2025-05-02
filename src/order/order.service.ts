@@ -12,6 +12,7 @@ import { ShippingAddressService } from 'src/shipping-address/shipping-address.se
 import { ShippingRuleService } from 'src/shipping-rule/shipping-rule.service';
 import { ChangeOrderStatusDto } from './dto/change-order-status.dto';
 import { User } from 'src/user/entities/user.entity';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class OrderService {
@@ -23,6 +24,7 @@ export class OrderService {
     private shippingAddressService : ShippingAddressService,
     private shippingRuleService : ShippingRuleService,
     private dataSource : DataSource,
+    private emailService : EmailService,
 
   ){}
 
@@ -89,6 +91,9 @@ export class OrderService {
   
       //remove cart items
       await this.cartService.clearAllMyItems(currentUser)
+
+      //Send Email
+      await this.emailService.sendEmail()
 
       await queryRunner.commitTransaction()
       
