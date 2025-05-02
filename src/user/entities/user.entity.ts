@@ -1,5 +1,6 @@
 
 import { Order } from 'src/order/entities/order.entity';
+import { Review } from 'src/review/entities/review.entity';
 import { Role } from 'src/role/entities/role.entity';
 import { ShippingAddress } from 'src/shipping-address/entities/shipping-address.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, DeleteDateColumn, OneToMany, OneToOne } from 'typeorm';
@@ -36,4 +37,7 @@ export class User {
 
   @OneToMany(()=>Order , (order) => order.user)
   orders : Order[]
+
+  @OneToMany(()=>Review , (review) => review.user)
+  reviews : Review[]
 }

@@ -1,6 +1,7 @@
 import slugify from "slugify";
 import { Category } from "src/category/entities/category.entity";
 import { ProductGallery } from "src/product-galleries/entities/product-gallery.entity";
+import { Review } from "src/review/entities/review.entity";
 import { Variant } from "src/variants/entities/variant.entity";
 import { AfterUpdate, BeforeInsert, Column, DeleteDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
@@ -43,6 +44,12 @@ export class Product {
 
     @OneToMany(()=>Variant,(v)=>v.product)
     variants:Variant[]
+
+    // @OneToMany(()=>Review , (review) => review.product)
+    // reviews : Review[]
+
+    @OneToMany(()=>Review , (review) => review.product)
+    reviews : Review[]
 
     @DeleteDateColumn()
     deletedDate:Date;

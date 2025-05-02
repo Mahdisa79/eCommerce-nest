@@ -34,6 +34,8 @@ import { OrderModule } from './order/order.module';
 import { Order } from './order/entities/order.entity';
 import { OrderDetail } from './order/entities/order-detail.entity';
 import { EmailModule } from './email/email.module';
+import { ReviewModule } from './review/review.module';
+import { Review } from './review/entities/review.entity';
 
 @Module({
   imports: [ 
@@ -47,9 +49,10 @@ import { EmailModule } from './email/email.module';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [User,Role,Endpoint,Permission,Category,Product,ProductGallery,Variant,VariantItem,Cart,CartItem,ShippingAddress,ShippingRule,Order,OrderDetail],
+        entities: [User,Role,Endpoint,Permission,Category,Product,ProductGallery,Variant,VariantItem,Cart,CartItem,ShippingAddress,ShippingRule,Order,OrderDetail,Review],
         synchronize: true,
       }),
+      
       inject: [ConfigService],
     }),
     UserModule,
@@ -68,6 +71,7 @@ import { EmailModule } from './email/email.module';
     ShippingRuleModule,
     OrderModule,
     EmailModule,
+    ReviewModule,
   ],
   controllers: [AppController],
   providers: [AppService],
