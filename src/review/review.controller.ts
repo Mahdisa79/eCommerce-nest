@@ -1,15 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
+import { CurrentUser } from 'src/cores/decorators/current-user.decorator';
+import { UserPayload } from 'src/user/interfaces/user-payload.interface';
+import { AuthGuard } from 'src/cores/guards/auth.guard';
+import { API_VERSION } from 'src/cores/constants/app.constant';
+import { TransformDTO } from 'src/cores/interceptors/transform-dto.interceptor';
+import { ResponseReviewDto } from './dto/response-review.dto';
 
-@Controller('review')
+@Controller(`${API_VERSION}/reviews`)
+@UseGuards(AuthGuard)
+@TransformDTO(ResponseReviewDto)
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
   @Post()
-  create(@Body() createReviewDto: CreateReviewDto) {
-    return this.reviewService.create(createReviewDto);
+  create(@Body() createReviewDto: CreateReviewDto , @CurrentUser() user : UserPayload) {
+    return this.reviewService.create(createReviewDto , user);
   }
 
   @Get()

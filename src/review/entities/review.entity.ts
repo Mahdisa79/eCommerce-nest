@@ -7,12 +7,12 @@ export class Review {
     @PrimaryGeneratedColumn()
     id:number
 
-    @Column({type:'text'})
+    @Column({type:'text' , nullable:true})
     content:string
 
     @Column({type:'decimal' ,precision:2 ,scale:1})
     rating:number
-    
+
     @ManyToOne(()=> User ,(product) =>product.reviews)
     product : Product
 
