@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -52,15 +52,31 @@ export class ReviewService {
     
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} review`;
+  async findOne(id: number) {
+    const review = await this.reviewRepository.findOne({where:{id} , relations:{user:true , product:true}})
+  
+    if(!review)
+      throw new NotFoundException(`No review ${id} founded`)
+
+    return review
   }
 
-  update(id: number, updateReviewDto: UpdateReviewDto) {
-    return `This action updates a #${id} review`;
+  async update(id: number, updateReviewDto: UpdateReviewDto) {
+    
+    const{content , rating} = updateReviewDto
+
+    const review = await this.findOne(id);
+    review.content = content ? content : review.content;
+    review.rating = rating ? rating : review.rating
+
+    return this.reviewRepository.save(review)
+
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} review`;
+  async remove(id: number) {
+    const review = await this.findOne(id);
+
+    await this.reviewRepository.remove(review)
+
   }
 }
