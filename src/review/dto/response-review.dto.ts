@@ -20,5 +20,8 @@ export class ResponseReviewDto {
     @Transform(({obj} : {obj:Review}) => obj.product?.id)
     productId : number
 
+    @Expose()
 
+    @Transform(({obj} : {obj:Review}) => obj.user?.id)
+    userId : number
 }

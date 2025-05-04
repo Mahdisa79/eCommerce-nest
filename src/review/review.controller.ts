@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, ParseIntPipe } from '@nestjs/common';
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
@@ -23,6 +23,11 @@ export class ReviewController {
   @Get()
   findAll() {
     return this.reviewService.findAll();
+  }
+
+  @Get('/:productId/me')
+  findMyReviews(@Param('productId',ParseIntPipe) productId : number,@CurrentUser() user : UserPayload) {
+    return this.reviewService.findMyReviews(productId,user);
   }
 
   @Get(':id')

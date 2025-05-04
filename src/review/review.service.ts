@@ -38,8 +38,18 @@ export class ReviewService {
 
   }
 
-  findAll() {
-    return `This action returns all review`;
+  async findAll() {
+    const reviews = await this.reviewRepository.find({relations:{product:true , user:true}})
+    console.log(reviews);
+    return reviews;
+    
+  }
+
+  async findMyReviews(productId : number ,currentUser : UserPayload) {
+    const reviews = await this.reviewRepository.find({where:{product:{id:productId},user:{id:currentUser.id}},relations:{product:true , user:true}})
+   
+    return reviews;
+    
   }
 
   findOne(id: number) {
