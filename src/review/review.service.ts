@@ -20,6 +20,10 @@ export class ReviewService {
     const product = await this.productService.findOne(createReviewDto.productId);
     const user = await this.userService.findOne(currentUser.id);
 
+    const reviewFound = await this.reviewRepository.findOne({where:{user:{id:currentUser.id} , product:{id : product.id}}})
+    if(reviewFound)
+      throw new BadRequestException('Cannot review the same product 2 time')
+
     //prevent create review
     const allOrdersDetails = user.orders.map(order => order.orderDetails).flat()
     const productFond = allOrdersDetails.find(orderDetail =>orderDetail.product.id === product.id)
