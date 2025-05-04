@@ -11,6 +11,8 @@ export class AuthGuard implements CanActivate {
   async canActivate(
     context: ExecutionContext,
   ): Promise<boolean>  {
+    console.log('Auth Guards');
+    
     const request = context.switchToHttp().getRequest() as Request;
 
     //Extract JWT bearer token header

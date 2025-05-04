@@ -36,6 +36,8 @@ import { OrderDetail } from './order/entities/order-detail.entity';
 import { EmailModule } from './email/email.module';
 import { ReviewModule } from './review/review.module';
 import { Review } from './review/entities/review.entity';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { RoleInterceptor } from './cores/interceptors/roles.interceptor';
 
 @Module({
   imports: [ 
@@ -74,6 +76,9 @@ import { Review } from './review/entities/review.entity';
     ReviewModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,{
+    provide:APP_INTERCEPTOR,
+    useClass:RoleInterceptor
+  }],
 })
 export class AppModule {}
