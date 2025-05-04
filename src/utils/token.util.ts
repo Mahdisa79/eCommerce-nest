@@ -8,7 +8,8 @@ export const generateToken = (user : User , jwtService: JwtService) =>{
         email:user.email,
         firstName:user.firstName,
         lastName:user.lastName,
-        isActive : user.isActive
+        isActive : user.isActive,
+        roleName:user.role.name,
       }
   
     //   const accessToken =  await jwtService.signAsync(payload);

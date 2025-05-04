@@ -11,7 +11,7 @@ export class AuthGuard implements CanActivate {
   async canActivate(
     context: ExecutionContext,
   ): Promise<boolean>  {
-    console.log('Auth Guards');
+    // console.log('Auth Guards');
     
     const request = context.switchToHttp().getRequest() as Request;
 
@@ -31,7 +31,8 @@ export class AuthGuard implements CanActivate {
             email : currentUser.email ,
             firstName:currentUser.firstName ,
             lastName:currentUser.lastName ,
-            isActive : currentUser.isActive
+            isActive : currentUser.isActive,
+            roleName:currentUser.roleName
         };
         
         return true;

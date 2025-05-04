@@ -4,4 +4,5 @@ export interface UserPayload{
     lastName:string;
     email:string;
     isActive:boolean;
+    roleName:string
 }

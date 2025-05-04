@@ -26,6 +26,13 @@ export class PermissionsService {
 
   }
 
+  async findOne(roleName:string , endpointId :number){
+    const permission = await this.permissionRepository.findOne({where:{roleName , endpointId}})
+    if(!permission)
+      throw new NotFoundException('permission not found')
+
+    return permission;
+  }
 
 
 }
