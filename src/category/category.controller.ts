@@ -35,6 +35,7 @@ export class CategoryController {
 
   @Patch(':id')
   @TransformDTO(ResponseCategoryNotChildrenDto)
+  @UseGuards(AuthGuard)
   async update(@Param('id' , ParseIntPipe) id: number, @Body() updateCategoryDto: UpdateCategoryDto) {
 
     return this.categoryService.update(id,updateCategoryDto)
@@ -42,6 +43,7 @@ export class CategoryController {
 
 
   @Delete(':id')
+  @UseGuards(AuthGuard)
   remove(@Param('id',ParseIntPipe) id: number) {
     return this.categoryService.remove(id);
   }

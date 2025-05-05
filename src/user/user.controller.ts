@@ -12,7 +12,7 @@ import { ResponseUserDto } from './dto/response-user.dto';
 import { ChangePwdUserDto } from './dto/change-pwd-user.dto';
 
 @Controller(`${API_VERSION}/users`)
-// @UseGuards(AuthGuard)
+@UseGuards(AuthGuard)
 @TransformDTO(ResponseUserDto)
 export class UserController {
   constructor(private readonly userService: UserService) {}

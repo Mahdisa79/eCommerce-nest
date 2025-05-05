@@ -41,7 +41,7 @@ import { RoleInterceptor } from './cores/interceptors/roles.interceptor';
 
 @Module({
   imports: [ 
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({isGlobal:true}),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({

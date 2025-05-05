@@ -1,12 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, ParseBoolPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, ParseBoolPipe, UseGuards } from '@nestjs/common';
 import { ShippingRuleService } from './shipping-rule.service';
 import { CreateShippingRuleDto } from './dto/create-shipping-rule.dto';
 import { UpdateShippingRuleDto } from './dto/update-shipping-rule.dto';
 import { API_VERSION } from 'src/cores/constants/app.constant';
 import { TransformDTO } from 'src/cores/interceptors/transform-dto.interceptor';
 import { ResponseShippingRuleDto } from './dto/response-shipping-rule.dto';
+import { AuthGuard } from 'src/cores/guards/auth.guard';
 
 @Controller(`${API_VERSION}/shipping-rules`)
+@UseGuards(AuthGuard)
 @TransformDTO(ResponseShippingRuleDto)
 export class ShippingRuleController {
   constructor(private readonly shippingRuleService: ShippingRuleService) {}

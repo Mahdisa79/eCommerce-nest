@@ -10,12 +10,12 @@ import { TransformDTO } from 'src/cores/interceptors/transform-dto.interceptor';
 import { ResponseReviewDto } from './dto/response-review.dto';
 
 @Controller(`${API_VERSION}/reviews`)
-@UseGuards(AuthGuard)
 @TransformDTO(ResponseReviewDto)
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
   @Post()
+  @UseGuards(AuthGuard)
   create(@Body() createReviewDto: CreateReviewDto , @CurrentUser() user : UserPayload) {
     return this.reviewService.create(createReviewDto , user);
   }
@@ -26,6 +26,7 @@ export class ReviewController {
   }
 
   @Get('/:productId/me')
+  @UseGuards(AuthGuard)
   findMyReviews(@Param('productId',ParseIntPipe) productId : number,@CurrentUser() user : UserPayload) {
     return this.reviewService.findMyReviews(productId,user);
   }
@@ -36,11 +37,13 @@ export class ReviewController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard)
   update(@Param('id' , ParseIntPipe) id: number, @Body() updateReviewDto: UpdateReviewDto) {
     return this.reviewService.update(id, updateReviewDto);
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard)
   remove(@Param('id' ,ParseIntPipe) id: number) {
     return this.reviewService.remove(id);
   }
