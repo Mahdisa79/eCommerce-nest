@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -38,6 +38,7 @@ import { ReviewModule } from './review/review.module';
 import { Review } from './review/entities/review.entity';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { RoleInterceptor } from './cores/interceptors/roles.interceptor';
+import { LoggerMiddleware } from './cores/middlewares/logger.middleware';
 
 @Module({
   imports: [ 
@@ -81,4 +82,8 @@ import { RoleInterceptor } from './cores/interceptors/roles.interceptor';
     useClass:RoleInterceptor
   }],
 })
-export class AppModule {}
+export class AppModule implements NestModule{
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*')
+  }
+}
