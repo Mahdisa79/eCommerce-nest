@@ -14,78 +14,78 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
-  const config = new DocumentBuilder()
-  .setTitle('eCommerce API')
-  .setDescription('The eCommerce API description')
-  .setVersion('1.0')
-  .addTag('eCommerce')
-  .build();
+//   const config = new DocumentBuilder()
+//   .setTitle('eCommerce API')
+//   .setDescription('The eCommerce API description')
+//   .setVersion('1.0')
+//   .addTag('eCommerce')
+//   .build();
 
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
+//   const documentFactory = () => SwaggerModule.createDocument(app, config);
+//   SwaggerModule.setup('api', app, documentFactory);
 
   await app.listen(3000);
 
 
-  const server = app.getHttpServer();
-  const router = server._events.request._router;
-  const {routes} = getAllRoutes(router);
+//   const server = app.getHttpServer();
+//   const router = server._events.request._router;
+//   const {routes} = getAllRoutes(router);
 
-  //console.log(routes);
-  const dataSource = app.get(DataSource);
-  const queryRunner = dataSource.createQueryRunner();
+//   //console.log(routes);
+//   const dataSource = app.get(DataSource);
+//   const queryRunner = dataSource.createQueryRunner();
 
-  try{
-    //DELETE ALL ENDPOINTS (truncate)
+//   try{
+//     //DELETE ALL ENDPOINTS (truncate)
   
-    await queryRunner.connect();
-    await queryRunner.startTransaction()
+//     await queryRunner.connect();
+//     await queryRunner.startTransaction()
 
-    await queryRunner.query('TRUNCATE endpoint RESTART IDENTITY CASCADE')
-    await queryRunner.query('TRUNCATE permission RESTART IDENTITY CASCADE')
+//     await queryRunner.query('TRUNCATE endpoint RESTART IDENTITY CASCADE')
+//     await queryRunner.query('TRUNCATE permission RESTART IDENTITY CASCADE')
 
    
-    // ADD Routes
-    for(const route of routes){
-      const[method , url] = route.split(' ');
-      await queryRunner.manager.createQueryBuilder().insert().into(Endpoint).values({url , method : method as HttpMethod}).execute();
-  }
+//     // ADD Routes
+//     for(const route of routes){
+//       const[method , url] = route.split(' ');
+//       await queryRunner.manager.createQueryBuilder().insert().into(Endpoint).values({url , method : method as HttpMethod}).execute();
+//   }
 
-  const roles = await queryRunner.manager.getRepository(Role)
-  .createQueryBuilder('role')
-  .where('role.isActive = :isActive',{isActive:true})
-  .getMany();
-  // console.log(roles);
+//   const roles = await queryRunner.manager.getRepository(Role)
+//   .createQueryBuilder('role')
+//   .where('role.isActive = :isActive',{isActive:true})
+//   .getMany();
+//   // console.log(roles);
 
-  const endpoints = await queryRunner.manager.getRepository(Endpoint)
-  .createQueryBuilder('endpoint')
-  .getMany();
+//   const endpoints = await queryRunner.manager.getRepository(Endpoint)
+//   .createQueryBuilder('endpoint')
+//   .getMany();
 
-  for( const role of roles){
-    //Loop get All endpoints
-    for(const endpoint of endpoints){
+//   for( const role of roles){
+//     //Loop get All endpoints
+//     for(const endpoint of endpoints){
 
-      await queryRunner.manager
-      .createQueryBuilder()
-      .insert().into(Permission)
-      .values({endpointId : endpoint.id , roleName : role.name , isAllow : role.name === 'admin' ? true : false})
-      .execute();
+//       await queryRunner.manager
+//       .createQueryBuilder()
+//       .insert().into(Permission)
+//       .values({endpointId : endpoint.id , roleName : role.name , isAllow : role.name === 'admin' ? true : false})
+//       .execute();
 
-    }
-  }
+//     }
+//   }
 
   
 
-  await queryRunner.commitTransaction();
-  console.log('Insert All Routes');
-}
+//   await queryRunner.commitTransaction();
+//   console.log('Insert All Routes');
+// }
 
-  catch(error){
-    await queryRunner.rollbackTransaction();
-    console.log('Failed to truncate table' ,error );
-  }finally{
-    await queryRunner.release();
-  }
+//   catch(error){
+//     await queryRunner.rollbackTransaction();
+//     console.log('Failed to truncate table' ,error );
+//   }finally{
+//     await queryRunner.release();
+//   }
 
 
   // GET ALL CURENT ENDPOINTS

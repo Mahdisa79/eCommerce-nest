@@ -1,3 +1,4 @@
+import { generateRefreshToken } from './../utils/token.util';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { SingInAuthDto } from './dto/sign-in-auth.dto';
 import { SingUpAuthDto } from './dto/sign-up-auth.dto';
@@ -21,7 +22,10 @@ export class AuthService {
     //3)save it to database
     //4)Generate JWT
 
-    return generateToken(user,this.jwtService)
+    const accessToken =  generateToken(user,this.jwtService)
+    const refreshToken =  generateRefreshToken(user,this.jwtService)
+
+    return {accessToken,refreshToken}
   
   }
 
@@ -35,8 +39,34 @@ export class AuthService {
     if(!isMatch) throw new BadRequestException('Bad Credentials');
 
     // 3) Issue accessToken
-    return generateToken(user,this.jwtService)
+    const accessToken =  await generateToken(user,this.jwtService)
+    const refreshToken =  await generateRefreshToken(user,this.jwtService)
 
+    return {accessToken,refreshToken}
+
+  }
+
+  async refreshToken({refreshToken}: {refreshToken:string}){
+
+    try{
+
+      const payload = await this.jwtService.verifyAsync(refreshToken,{
+        secret:process.env.REFRESH_SECRET_KEY,
+      })
+  
+      // console.log(payload);
+      const user = await this.userService.findByEmail(payload.email);
+  
+      // Generate new accessToken , refreshToken
+      const newAccessToken =  await generateToken(user,this.jwtService)
+      const newRefreshToken =  await generateRefreshToken(user,this.jwtService)
+  
+      return {accessToken: newAccessToken,refreshToken:newRefreshToken}
+
+    }catch{
+      throw new BadRequestException('RT already expired')
+    }
+    
   }
 
 }

@@ -24,7 +24,9 @@ import { AuthGuard } from 'src/cores/guards/auth.guard';
           global:true,
           secret: config.get<string>('JWT_SECRET_KEY'),
           signOptions: {
-            expiresIn: config.get<string | number>('JWT_EXPIRATION_TIME'),
+            // expiresIn: config.get<string | number>('JWT_EXPIRATION_TIME'),
+            expiresIn: '10s',
+
           },
         };
       },

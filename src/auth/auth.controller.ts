@@ -21,12 +21,21 @@ export class AuthController {
   @Post('/sign-in')
   @HttpCode(200)
   async singIn(@Body() singInAuthDTO: SingInAuthDto) {
-    const accessToken = await this.authService.singIn(singInAuthDTO);
+    const data = await this.authService.singIn(singInAuthDTO);
     return {
       message : 'sign in successfully',
-      data : accessToken
+      data 
     }
   }
 
+  @Post('/refresh-token')
+  @HttpCode(200)
+  async refreshToken(@Body() Body: {refreshToken:string}) {
+    const data = await this.authService.refreshToken(Body);
+    return {
+      message : 'sign in successfully',
+      data 
+    }
+  }
 
 }
