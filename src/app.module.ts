@@ -39,6 +39,7 @@ import { Review } from './review/entities/review.entity';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { RoleInterceptor } from './cores/interceptors/roles.interceptor';
 import { LoggerMiddleware } from './cores/middlewares/logger.middleware';
+import { PasswordChangeRequest } from './user/entities/password-change-request';
 
 @Module({
   imports: [ 
@@ -52,7 +53,7 @@ import { LoggerMiddleware } from './cores/middlewares/logger.middleware';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [User,Role,Endpoint,Permission,Category,Product,ProductGallery,Variant,VariantItem,Cart,CartItem,ShippingAddress,ShippingRule,Order,OrderDetail,Review],
+        entities: [User,Role,Endpoint,Permission,Category,Product,ProductGallery,Variant,VariantItem,Cart,CartItem,ShippingAddress,ShippingRule,Order,OrderDetail,Review,PasswordChangeRequest],
         synchronize: true,
       }),
       

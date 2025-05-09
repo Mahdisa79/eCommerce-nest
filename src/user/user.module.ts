@@ -7,11 +7,15 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { RoleModule } from 'src/role/role.module';
 import { CartModule } from 'src/cart/cart.module';
+import { PasswordChangeRequest } from './entities/password-change-request';
+import { PasswordRecoveryService } from './password-recovery.service';
+import { PasswordRecoveryController } from './password-recovery.controller';
+import { EmailModule } from 'src/email/email.module';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([User]),RoleModule,JwtModule,ConfigModule,CartModule],
-  controllers: [UserController],
-  providers: [UserService],
+  imports:[TypeOrmModule.forFeature([User,PasswordChangeRequest]),RoleModule,JwtModule,ConfigModule,CartModule],
+  controllers: [UserController,PasswordRecoveryController],
+  providers: [UserService,PasswordRecoveryService],
   exports:[UserService]
 })
 export class UserModule {}
